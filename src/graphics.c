@@ -5,9 +5,6 @@
 #include "../include/domino.h"
 #include "../include/graphics.h"
 
-
-
-
 int init_SDL(SDL_Window **window_p, SDL_Renderer **renderer_p){
     // Initialize SDL
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -206,7 +203,7 @@ int DrawPips(SDL_Renderer *renderer, Sint16 x1, Sint16 y1, int NumPips, int vert
 
 int DrawDomino(SDL_Renderer *renderer, Sint16 x, Sint16 y, domino d, int selected, int vertical){
 	if (selected == 1){
-		x += 20;
+		y -= 20;
 	}
     printf("in Draw domino \n rend=%x \n x,y = %d,%d \n r,l = %d, %d\n ", renderer, x, y, d.right, d.left);
     DrawEmptyDomino(renderer, x, y, vertical);
@@ -218,5 +215,22 @@ int DrawDomino(SDL_Renderer *renderer, Sint16 x, Sint16 y, domino d, int selecte
         DrawPips(renderer, x, y + DOMINO_HEIGHT/2, d.right, vertical);
     }
     return 0;
+}
+
+int DrawHands(SDL_Renderer *renderer, game Game){
+    player_hand* hand1 = Game.currentRound->player[0];
+    player_hand* hand2 = Game.currentRound->player[1];
+    domino** board = Game.currentRound->board;
+    for (int i = 0; i < hand1->size; i++){
+        if (Game.selected == i){
+            DrawDomino(renderer, 600 + i*(DOMINO_WIDTH+10) , 800, *(hand1->hand[i]), 1, 1);
+        }
+        else{
+            DrawDomino(renderer, 600  + i*(DOMINO_WIDTH+10), 800, *(hand1->hand[i]), 0, 1);
+        }
+    }
+    for(int i = 0; i < hand2->size; i++){
+        DrawEmptyDomino(renderer, 600 + i*(DOMINO_WIDTH+10), 5, 1);
+    }
 }
 

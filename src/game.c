@@ -76,6 +76,7 @@ void PlaceDomino(int playerIndx, game* Game){
 int update(SDL_Renderer* renderer, SDL_Texture* texture, game Game){
     DrawBackground(renderer, texture);
     printf("in update\n");
+    /*
     player_hand* hand1 = Game.currentRound->player[0];
     player_hand* hand2 = Game.currentRound->player[1];
     domino** board = Game.currentRound->board;
@@ -90,10 +91,14 @@ int update(SDL_Renderer* renderer, SDL_Texture* texture, game Game){
     for (int i = 0; i < hand2->size; i++){
         DrawEmptyDomino(renderer, 1100 , 20 + i*(DOMINO_WIDTH+10), 0);
     }
+    */
+    domino** board = Game.currentRound->board;
+    DrawHands(renderer, Game);
     for (int i = 0; i < 27; i++){
 	    printf("Drawing domino %d %x\n", i, board[i]);
 	if (board[i] == NULL){
-       		DrawEmptyDomino(renderer, 500 , 20 + i*(DOMINO_WIDTH+10), 0);
+       	//	DrawEmptyDomino(renderer, 500 , 20 + i*(DOMINO_WIDTH+10), 0);
+        ;
 	    }
 	else{
         DrawDomino(renderer, 500 , 20 + i*(DOMINO_WIDTH+10), *board[i], 0, 0);
