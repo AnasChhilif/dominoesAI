@@ -72,8 +72,8 @@ int DrawBackground(SDL_Renderer *renderer, SDL_Texture *texture){
     destination.h = height;
 
     // Clear the window to black
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-    SDL_RenderClear(renderer);
+    //SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    //SDL_RenderClear(renderer);
 
     // Draw the image to the window
     SDL_RenderCopy(renderer, texture, NULL, &destination);
@@ -205,7 +205,7 @@ int DrawDomino(SDL_Renderer *renderer, Sint16 x, Sint16 y, domino d, int selecte
 	if (selected == 1){
 		y -= 20;
 	}
-    printf("in Draw domino \n rend=%x \n x,y = %d,%d \n r,l = %d, %d\n ", renderer, x, y, d.right, d.left);
+    //printf("in Draw domino \n rend=%x \n x,y = %d,%d \n r,l = %d, %d\n ", renderer, x, y, d.right, d.left);
     DrawEmptyDomino(renderer, x, y, vertical);
     DrawPips(renderer, x, y, d.left, vertical);
     if(vertical == 0){
@@ -231,6 +231,25 @@ int DrawHands(SDL_Renderer *renderer, game Game){
     }
     for(int i = 0; i < hand2->size; i++){
         DrawEmptyDomino(renderer, 600 + i*(DOMINO_WIDTH+10), 5, 1);
+    }
+}
+
+int DrawBoard(SDL_Renderer *renderer, game Game){
+    game_round* round = Game.currentRound;
+    domino** board = Game.currentRound->board;
+    for (int i = 0; i < 27; i++){
+	if (board[i] == NULL){
+	//  DrawEmptyDomino(renderer, 500 , 20 + i*(DOMINO_WIDTH+10), 0);
+        }
+	else {
+	    DrawDomino(renderer, 500 , 20 + i*(DOMINO_WIDTH+10), *board[i], 0, 0);
+	}
+    }
+    if (Game.side == 0){
+        DrawEmptyDomino(renderer, 500 , 20 + round->left_end*(DOMINO_WIDTH+10), 0);
+    }
+    if (Game.side == 1){
+        DrawEmptyDomino(renderer, 500 , 20 + round->right_end*(DOMINO_WIDTH+10), 0);
     }
 }
 

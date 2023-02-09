@@ -69,7 +69,8 @@ game_round* NewRound(){
     game_round* round = (game_round*) malloc(sizeof(game_round));
     round->player[0] = hand1;
     round->player[1] = hand2;
-    round->left_end = round->right_end = 13;
+    round->left_end = 13;
+    round->right_end = 14;
     for (int i = 0; i < BOARD_SIZE; i++){
 	round->board[i] = NULL;
     }

@@ -11,10 +11,10 @@ int get_input(){
     int PlayerInput = 0;
     SDL_PollEvent(&event);
     if(event.type == SDL_KEYDOWN){
-        if(event.key.keysym.sym == SDLK_RIGHT){
+        if(event.key.keysym.sym == SDLK_LEFT){
             PlayerInput = 1;
         }
-        if(event.key.keysym.sym == SDLK_LEFT){
+        if(event.key.keysym.sym == SDLK_RIGHT){
             PlayerInput = 2;
         }
         if(event.key.keysym.sym == SDLK_UP){
@@ -52,12 +52,19 @@ int HandleInput(int input, game* Game){
 
 void PlaceDomino(int playerIndx, game* Game){
 	player_hand* hand = Game->currentRound->player[playerIndx];
+	if (hand->size == 0){
+		printf("Cant place domino, hand is empty\n");
+		return;
+	}
 	domino* selectedDomino = hand->hand[Game->selected];
 
 	// remove selected domino from the hand
 	hand->size --;
 	for (int i = Game->selected; i < hand->size; i++){
 		hand->hand[i] = hand->hand[i+1];
+	}
+	if(Game->selected >= hand->size){
+		Game->selected = hand->size - 1;
 	}
 
 	// Put it in correct side
@@ -75,36 +82,8 @@ void PlaceDomino(int playerIndx, game* Game){
 
 int update(SDL_Renderer* renderer, SDL_Texture* texture, game Game){
     DrawBackground(renderer, texture);
-    printf("in update\n");
-    /*
-    player_hand* hand1 = Game.currentRound->player[0];
-    player_hand* hand2 = Game.currentRound->player[1];
-    domino** board = Game.currentRound->board;
-    for (int i = 0; i < hand1->size; i++){
-	if (Game.selected == i){
-		DrawDomino(renderer, 20 , 20 + i*(DOMINO_WIDTH+10), *(hand1->hand[i]), 1, 0);
-	}
-	else{
-		DrawDomino(renderer, 20 , 20 + i*(DOMINO_WIDTH+10), *(hand1->hand[i]), 0, 0);
-	}
-    }
-    for (int i = 0; i < hand2->size; i++){
-        DrawEmptyDomino(renderer, 1100 , 20 + i*(DOMINO_WIDTH+10), 0);
-    }
-    */
-    domino** board = Game.currentRound->board;
     DrawHands(renderer, Game);
-    for (int i = 0; i < 27; i++){
-	    printf("Drawing domino %d %x\n", i, board[i]);
-	if (board[i] == NULL){
-       	//	DrawEmptyDomino(renderer, 500 , 20 + i*(DOMINO_WIDTH+10), 0);
-        ;
-	    }
-	else{
-        DrawDomino(renderer, 500 , 20 + i*(DOMINO_WIDTH+10), *board[i], 0, 0);
-    }
-
-    }
+    DrawBoard(renderer, Game);
     SDL_RenderPresent(renderer);
     return 0;
 }
@@ -112,6 +91,8 @@ int update(SDL_Renderer* renderer, SDL_Texture* texture, game Game){
 
 int main(int argc, char* argv[]) {
 
+    int X[27] = {1275, 1185, 1094, 1003, 912, 821, 729, 637, 581, 581, 637, 729, 821, 912, 1003, 1094, 1185, 1275, 1275, 1185, 1094, 1003, 912, 821, 729, 637, 577};
+    int Y[27] = [340, 373, 373, 373, 373, 373, 373, 373, 373, 484, 491, 491, 491, 491, 491, 491, 491, 491, 580, 609, 609, 609, 609, 609, 609, 609, 609];
     SDL_Window* window;
     SDL_Renderer* renderer;
     init_SDL(&window, &renderer);
