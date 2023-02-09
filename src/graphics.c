@@ -282,3 +282,44 @@ int DrawBoard(SDL_Renderer *renderer, game Game){
     DrawSelectedBorder(renderer, X[end], Y[end], vertical[end]);
 }
 
+int DrawScore(SDL_Renderer *renderer, game Game){
+    //Displaying whatever text we want based on whatever dimensions we give
+    TTF_Font* font = TTF_OpenFont("assets/font.ttf", 64); // Loading up the font
+    SDL_Color color = {255, 255, 255}; // setting up the color of the text
+
+    char score1[4], score2[4];
+    char RoundNum[3];
+    sprintf(score1, "%d", Game.score[0]);
+    sprintf(score2, "%d", Game.score[1]);
+    sprintf(RoundNum, "%d", Game.roundNum);
+    //Declaring the surface variable
+    SDL_Surface* surfaceMessage = NULL;
+
+    surfaceMessage = TTF_RenderText_Blended(font, score1, color);
+
+    //Testing if the text is rendered succesfully.
+    if (surfaceMessage == NULL ){
+	printf("Error creating surface : %s\n", SDL_GetError());
+	exit(0);
+    }
+
+    //Creating the texture of the text to be displayed
+    SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+    if (Message == NULL ){
+	printf("Error creating texture : %s\n", SDL_GetError());
+	exit(0);
+    }
+
+    //Copying the Message data to the renderer and storing the functions output for bug testing.
+    int err = SDL_RenderCopy(renderer, Message, NULL, titler);
+    if (err <0){
+	printf("Error copying to renderer : %s\n", SDL_GetError());
+	exit(0);
+    }
+
+    //Presenting the Result and freeing all unused memory space
+    SDL_RenderPresent(renderer);
+    SDL_FreeSurface(surfaceMessage);
+    SDL_DestroyTexture(Message);
+}
+
