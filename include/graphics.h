@@ -16,6 +16,7 @@ int DrawPips(SDL_Renderer *renderer, Sint16 x1, Sint16 y1, int NumPips, int vert
 int DrawDomino(SDL_Renderer *renderer, Sint16 x, Sint16 y, domino d, int selected, int vertical);
 int DrawHands(SDL_Renderer *renderer, game Game);
 int DrawBoard(SDL_Renderer *renderer, game Game);
+int DrawSelectedBorder(SDL_Renderer *renderer, Sint16 x1, Sint16 y1, int vertical);
 
 #endif
 
