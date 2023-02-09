@@ -5,6 +5,11 @@
 #include "../include/domino.h"
 #include "../include/graphics.h"
 
+
+    int X[27] = {1275, 1185, 1094, 1003, 912, 821, 729, 637, 581, 581, 637, 729, 821, 912, 1003, 1094, 1185, 1275, 1275, 1185, 1094, 1003, 912, 821, 729, 637, 577};
+    int Y[27] = {340, 373, 373, 373, 373, 373, 373, 373, 373, 484, 491, 491, 491, 491, 491, 491, 491, 491, 580, 609, 609, 609, 609, 609, 609, 609, 609};
+    int vertical[27] = {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1};
+
 int init_SDL(SDL_Window **window_p, SDL_Renderer **renderer_p){
     // Initialize SDL
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -242,7 +247,7 @@ int DrawBoard(SDL_Renderer *renderer, game Game){
 	//  DrawEmptyDomino(renderer, 500 , 20 + i*(DOMINO_WIDTH+10), 0);
         }
 	else {
-	    DrawDomino(renderer, 500 , 20 + i*(DOMINO_WIDTH+10), *board[i], 0, 0);
+	    DrawDomino(renderer, X[i], Y[i], *board[i], 0, vertical[i]);
 	}
     }
     if (Game.side == 0){

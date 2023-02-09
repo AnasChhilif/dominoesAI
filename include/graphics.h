@@ -7,6 +7,7 @@
 #define DOMINO_HEIGHT 75
 #define PIP_RADIUS 4
 
+
 int init_SDL(SDL_Window **window, SDL_Renderer **renderer);
 SDL_Texture* initBackground(SDL_Renderer *renderer);
 int DrawBackground(SDL_Renderer *renderer, SDL_Texture* texture);
