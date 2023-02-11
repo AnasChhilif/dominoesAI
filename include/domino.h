@@ -1,8 +1,10 @@
 #ifndef DOMINO_H
 #define DOMINO_H
 
-#define HAND_SIZE 7
-#define BOARD_SIZE 27           // -13 --------- 0 ----------13
+#define HAND_SIZE 12
+#define BOARD_SIZE 27
+// -13 --------- 0 ----------13
+//   0 --------- 13----------27
 
 typedef struct {
     int right, left;
@@ -25,6 +27,7 @@ typedef struct game{
     int roundNum;
     int selected;
     int side;
+    int turn;
 }game;
 
 

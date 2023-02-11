@@ -8,7 +8,7 @@
 #define PIP_RADIUS 4
 
 
-int init_SDL(SDL_Window **window, SDL_Renderer **renderer);
+int init_SDL(SDL_Window **window, SDL_Renderer **renderer, TTF_Font** font);
 SDL_Texture* initBackground(SDL_Renderer *renderer);
 int DrawBackground(SDL_Renderer *renderer, SDL_Texture* texture);
 int DrawEmptyDomino(SDL_Renderer *renderer, Sint16 x1, Sint16 y1, int vertical);
@@ -17,6 +17,7 @@ int DrawDomino(SDL_Renderer *renderer, Sint16 x, Sint16 y, domino d, int selecte
 int DrawHands(SDL_Renderer *renderer, game Game);
 int DrawBoard(SDL_Renderer *renderer, game Game);
 int DrawSelectedBorder(SDL_Renderer *renderer, Sint16 x1, Sint16 y1, int vertical);
+int DrawScore(SDL_Renderer *renderer, TTF_Font* font, game Game);
 
 #endif
 
