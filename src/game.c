@@ -29,7 +29,7 @@ int get_input(){
         if(event.key.keysym.sym == SDLK_SPACE){
             PlayerInput = 5;
         }
-        if(event.key.keysym.sym == SDLK_P){
+        if(event.key.keysym.sym == SDLK_p){
             PlayerInput = 6;
         }
     }
@@ -227,6 +227,7 @@ int main(int argc, char* argv[]) {
 	}
         // Then update screen
         update(renderer, background, font, Game);
+        SDL_Delay(34);
     }
 
     SDL_DestroyRenderer(renderer);

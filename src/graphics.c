@@ -6,8 +6,10 @@
 #include "../include/domino.h"
 #include "../include/graphics.h"
 
-int X[27] = {1032, 957, 881, 805, 730, 654, 577, 500, 454, 454, 500, 577, 654, 730, 805, 881, 957, 1032, 1032, 957, 881, 805, 730, 654, 577, 500, 450};
-int Y[27] = {340, 373, 373, 373, 373, 373, 373, 373, 373, 484, 491, 491, 491, 491, 491, 491, 491, 491, 580, 609, 609, 609, 609, 609, 609, 609, 609};
+int X[27] = {962, 887, 811, 735, 660, 584, 507, 430, 384, 384, 430, 507, 584, 660, 735, 811, 887, 962, 962, 887, 811, 735, 660, 584, 507, 430, 380};
+//int X[27] = {1032, 957, 881, 805, 730, 654, 577, 500, 454, 454, 500, 577, 654, 730, 805, 881, 957, 1032, 1032, 957, 881, 805, 730, 654, 577, 500, 450};
+//int Y[27] = {340, 373, 373, 373, 373, 373, 373, 373, 373, 484, 491, 491, 491, 491, 491, 491, 491, 491, 580, 609, 609, 609, 609, 609, 609, 609, 609};
+int Y[27] = {233, 260, 260, 260, 260, 260, 260, 260, 260, 333, 359, 359, 359, 359, 359, 359, 359, 359, 433, 457, 457, 457, 457, 457, 457, 457, 457};
 int vertical[27] = {1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1};
 
 int init_SDL(SDL_Window **window_p, SDL_Renderer **renderer_p, TTF_Font** font_p){
@@ -276,13 +278,13 @@ int DrawBoard(SDL_Renderer *renderer, game Game){
 		tmp.left = board[i]->right;
             DrawDomino(renderer, X[i], Y[i], tmp, 0, vertical[i]);
         }
-	else DrawEmptyDomino(renderer, X[i] , Y[i], vertical[i]);
+//	else DrawEmptyDomino(renderer, X[i] , Y[i], vertical[i]);
     }
     for (int i = 8; i < 19; i++){
         if (board[i] != NULL){
             DrawDomino(renderer, X[i], Y[i], *board[i], 0, vertical[i]);
 	}
-	else DrawEmptyDomino(renderer, X[i] , Y[i], vertical[i]);
+//	else DrawEmptyDomino(renderer, X[i] , Y[i], vertical[i]);
     }
     for (int i = 19; i < 27; i++){
         if (board[i] != NULL){
@@ -291,7 +293,7 @@ int DrawBoard(SDL_Renderer *renderer, game Game){
 		tmp.left = board[i]->right;
             DrawDomino(renderer, X[i], Y[i], tmp, 0, vertical[i]);
         }
-	else DrawEmptyDomino(renderer, X[i] , Y[i], vertical[i]);
+//	else DrawEmptyDomino(renderer, X[i] , Y[i], vertical[i]);
     }
     if (Game.side == 0){
         end = round->left_end;

@@ -1,7 +1,7 @@
 #ifndef DOMINO_H
 #define DOMINO_H
 
-#define HAND_SIZE 12
+#define HAND_SIZE 7
 #define BOARD_SIZE 27
 // -13 --------- 0 ----------13
 //   0 --------- 13----------27
