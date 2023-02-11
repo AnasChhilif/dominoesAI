@@ -36,14 +36,14 @@ int get_input(){
     return PlayerInput;
 }
 
-int HandleInput(int input, game* Game){
+int HandleInput(int input, game* Game, int *pass){
 	if (input == 4){
 		Game->selected ++;
-		Game->selected %= Game->currentRound->player[Game->turn]->size;
+		Game->selected %= Game->currentRound->player[Game->currentRound->turn]->size;
 	}
 	if (input == 3){
-		Game->selected += Game->currentRound->player[Game->turn]->size - 1;
-		Game->selected %= Game->currentRound->player[Game->turn]->size;
+		Game->selected += Game->currentRound->player[Game->currentRound->turn]->size - 1;
+		Game->selected %= Game->currentRound->player[Game->currentRound->turn]->size;
 	}
 	if (input == 1){
 		Game->side = 0;
@@ -54,19 +54,21 @@ int HandleInput(int input, game* Game){
 	if (input == 5){
 		if (ValidMove(Game)){
 			PlaceDomino(Game);
-			Game->turn = 1 - Game->turn;
+			Game->currentRound->turn = 1 - Game->currentRound->turn;
+            *pass = 0;
 		}
 		else {
 			printf("Cant put THAT domino\n");
 		}
 	}
     if(input == 6){
-        Game->turn = 1 - Game->turn;
+        Game->currentRound->turn = 1 - Game->currentRound->turn;
+        *pass += 1;
     }
 }
 
 void PlaceDomino(game* Game){
-	player_hand* hand = Game->currentRound->player[Game->turn];
+	player_hand* hand = Game->currentRound->player[Game->currentRound->turn];
 	if (hand->size == 0){
 		printf("Cant place domino, hand is empty\n");
 		return;
@@ -111,7 +113,8 @@ int update(SDL_Renderer* renderer, SDL_Texture* texture, TTF_Font* font, game Ga
     DrawBackground(renderer, texture);
     DrawHands(renderer, Game);
     DrawBoard(renderer, Game);
-    DrawScore(renderer, font, Game);
+//    DrawScore(renderer, font, Game);
+    DrawInfo(renderer, font, Game);
     SDL_RenderPresent(renderer);
     return 0;
 }
@@ -132,7 +135,7 @@ void TurnDomino(domino* domino){
 }
 
 int ValidMove(game* Game){
-	player_hand* hand = Game->currentRound->player[Game->turn];
+	player_hand* hand = Game->currentRound->player[Game->currentRound->turn];
 	if (hand->size == 0){
 		return 0;
 	}
@@ -166,16 +169,27 @@ int ValidMove(game* Game){
 	return 0;
 }
 
-int RoundEnded(game* Game){
+int RoundEnded(game* Game, int pass){
 	player_hand* hand1 = Game->currentRound->player[0];
 	player_hand* hand2 = Game->currentRound->player[1];
-	return hand1->size == 0 || hand2->size == 0;
+	return hand1->size == 0 || hand2->size == 0 || pass == 2;
 }
 int Winner(game* Game){
 	player_hand* hand1 = Game->currentRound->player[0];
 	player_hand* hand2 = Game->currentRound->player[1];
 	if ( hand1->size == 0 ) return 0;
 	if ( hand2->size == 0 ) return 1;
+    int total1 = 0, total2 = 0;
+    for(int i = 0; i<hand1->size; i++){
+        total1+= hand1->hand[i]->right;
+        total1+= hand1->hand[i]->left;
+    }
+    for(int i = 0; i<hand2->size; i++){
+        total2+= hand2->hand[i]->right;
+        total2+= hand2->hand[i]->left;
+    }
+    if ( total1>total2 ) return 0;
+    else return 1;
 }
 
 int main(int argc, char* argv[]) {
@@ -193,19 +207,19 @@ int main(int argc, char* argv[]) {
     Game.score[1] = 0;
     Game.selected = 0;	 	// currently selected domino
     Game.side = 0;		// currently selected side  0: right, 1: left
-    Game.turn = 0;
     Game.currentRound = NewRound();
     int input = 0;
 
     // Game loop
     SDL_Texture* background = initBackground(renderer);
+    int pass = 0;
     while (!SDL_QuitRequested()) {
-	if (Game.turn == 0){
+	if (Game.currentRound->turn == 0){
 		input = 0;
 		input = get_input();
 
 		// edit game data based on input
-		HandleInput(input, &Game);
+		HandleInput(input, &Game, &pass);
 
 	}
 	else {
@@ -216,14 +230,15 @@ int main(int argc, char* argv[]) {
 		input = get_input();
 
 		// edit game data based on input
-		HandleInput(input, &Game);
+		HandleInput(input, &Game, &pass);
 	}
 
-	if ( RoundEnded(&Game) ){
+	if ( RoundEnded(&Game, pass) ){
 		// TODO: following in a separate function InitRound
+		UpdateScore(&Game,Winner(&Game));
 		Game.currentRound = NewRound();
-		UpdateScore(&Game, 1 - Game.turn);
 		Game.roundNum += 1;
+        pass = 0;
 	}
         // Then update screen
         update(renderer, background, font, Game);

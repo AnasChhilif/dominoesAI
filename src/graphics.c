@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
@@ -7,8 +8,6 @@
 #include "../include/graphics.h"
 
 int X[27] = {962, 887, 811, 735, 660, 584, 507, 430, 384, 384, 430, 507, 584, 660, 735, 811, 887, 962, 962, 887, 811, 735, 660, 584, 507, 430, 380};
-//int X[27] = {1032, 957, 881, 805, 730, 654, 577, 500, 454, 454, 500, 577, 654, 730, 805, 881, 957, 1032, 1032, 957, 881, 805, 730, 654, 577, 500, 450};
-//int Y[27] = {340, 373, 373, 373, 373, 373, 373, 373, 373, 484, 491, 491, 491, 491, 491, 491, 491, 491, 580, 609, 609, 609, 609, 609, 609, 609, 609};
 int Y[27] = {233, 260, 260, 260, 260, 260, 260, 260, 260, 333, 359, 359, 359, 359, 359, 359, 359, 359, 433, 457, 457, 457, 457, 457, 457, 457, 457};
 int vertical[27] = {1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1};
 
@@ -304,6 +303,7 @@ int DrawBoard(SDL_Renderer *renderer, game Game){
     DrawSelectedBorder(renderer, X[end], Y[end], vertical[end]);
 }
 
+/*
 int DrawScore(SDL_Renderer *renderer, TTF_Font* font, game Game){
     //Displaying whatever text we want based on whatever dimensions we give
     SDL_Color color = {100, 100, 255}; // setting up the color of the text
@@ -351,7 +351,7 @@ int DrawScore(SDL_Renderer *renderer, TTF_Font* font, game Game){
 	printf("Error creating texture : %s\n", SDL_GetError());
 	exit(0);
     }
-    SDL_Texture* Message3 = SDL_CreateTextureFromSurface(renderer, surfaceMessage2);
+    SDL_Texture* Message3 = SDL_CreateTextureFromSurface(renderer, surfaceMessage3);
     if (Message2 == NULL ){
 	printf("Error creating texture : %s\n", SDL_GetError());
 	exit(0);
@@ -389,5 +389,40 @@ int DrawScore(SDL_Renderer *renderer, TTF_Font* font, game Game){
     SDL_FreeSurface(surfaceMessage);
     SDL_FreeSurface(surfaceMessage2);
     SDL_FreeSurface(surfaceMessage3);
+}
+*/
+
+int DrawText(SDL_Renderer *renderer, char text[],TTF_Font* font, int x, int y){
+    SDL_Color color = {255, 255, 255}; // setting up the color of the text
+    SDL_Surface* surfaceMessage = NULL;
+    surfaceMessage = TTF_RenderText_Blended(font, text, color);
+    if (surfaceMessage == NULL ){
+	printf("Error creating surface : %s\n", SDL_GetError());
+	exit(0);
+    }
+    SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage);
+    if (Message == NULL ){
+	printf("Error creating texture : %s\n", SDL_GetError());
+	exit(0);
+    }
+    SDL_Rect destination;
+    destination.x = x;
+    destination.y = y;
+    destination.w = 12 * strlen(text);
+    destination.h = 24;
+    int err = SDL_RenderCopy(renderer, Message, NULL, &destination);
+    SDL_DestroyTexture(Message);
+    SDL_FreeSurface(surfaceMessage);
+}
+
+int DrawInfo(SDL_Renderer *renderer, TTF_Font* font, game Game){
+    char score1[4], score2[4];
+    char RoundNum[3];
+    sprintf(score1, "%d", Game.score[0]);
+    sprintf(score2, "%d", Game.score[1]);
+    sprintf(RoundNum, "%d", Game.roundNum);
+    DrawText(renderer, score1, font, 1453, 168);
+    DrawText(renderer, score2, font, 1453, 268);
+    DrawText(renderer, RoundNum, font, 1473, 367);
 }
 

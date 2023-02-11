@@ -18,6 +18,8 @@ int DrawHands(SDL_Renderer *renderer, game Game);
 int DrawBoard(SDL_Renderer *renderer, game Game);
 int DrawSelectedBorder(SDL_Renderer *renderer, Sint16 x1, Sint16 y1, int vertical);
 int DrawScore(SDL_Renderer *renderer, TTF_Font* font, game Game);
+int DrawText(SDL_Renderer *renderer, char text[],TTF_Font* font, int x, int y);
+int DrawInfo(SDL_Renderer *renderer, TTF_Font* font, game Game);
 
 #endif
 

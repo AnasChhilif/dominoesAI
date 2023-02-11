@@ -19,6 +19,7 @@ typedef struct game_round {
     player_hand* player[2];             // 0 is the player, 1 is the bot
     domino *board[BOARD_SIZE];
     int left_end, right_end;
+    int turn;
 }game_round;
 
 typedef struct game{
@@ -27,7 +28,6 @@ typedef struct game{
     int roundNum;
     int selected;
     int side;
-    int turn;
 }game;
 
 

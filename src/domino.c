@@ -71,6 +71,7 @@ game_round* NewRound(){
     round->player[1] = hand2;
     round->left_end = 13;
     round->right_end = 13;
+    round->turn = 0;
     for (int i = 0; i < BOARD_SIZE; i++){
 	round->board[i] = NULL;
     }
