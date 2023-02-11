@@ -2,11 +2,6 @@
 #include<stdlib.h>
 #include "../include/dominoes.h"
 
-int RoundEnded(game_round* Round){
-	player_hand* hand1 = Round->player[0];
-	player_hand* hand2 = Round->player[1];
-	return hand1->size == 0 || hand2->size == 0;
-}
 int eval(game_round* Round){
 	return 0;
 }

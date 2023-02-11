@@ -35,8 +35,16 @@ domino* CreateDomino(int right, int left);
 void shuffle(domino* array[], size_t n);
 void generate_hands(player_hand* hand1, player_hand* hand2);
 game_round* NewRound();
-
-
+void PlaceDomino(game* Game);
+int ValidMove(game* Game);
+int Winner(game* Game);
+int RoundEnded(game* Game, int pass);
+void TurnDomino(domino* domino);
+void UpdateScore(game* Game, int winner);
+int HandleInput(int input, game* Game, int *pass);
+game_round *roundCopy(game Game);
+void handsCopy(player_hand* hand1, player_hand *hand2, game Game);
+void freeRound(game_round *round);
 
 #endif
 
