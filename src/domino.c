@@ -222,7 +222,7 @@ int Winner(game* Game){
         total2+= hand2->hand[i]->right;
         total2+= hand2->hand[i]->left;
     }
-    if ( total1>total2 ) return 0;
+    if ( total1<=total2 ) return 0;
     else return 1;
 }
 
