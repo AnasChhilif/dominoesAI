@@ -77,8 +77,16 @@ int main(int argc, char* argv[]) {
 	else {
 		// Ai move
 		// BotMove(&Game);
-		input = 0;
-		input = get_input();
+        decision *Dec = minimax(Game.currentRound, 3, 0);
+        printf("%d %d\n", Dec->DomInd, Dec->side);
+        if(Dec->DomInd == -1){
+            input = 6;
+            HandleInput(input, &Game, &pass);
+            continue;
+        }
+        Game.selected = Dec->DomInd;
+        Game.side = Dec->side;
+		input = 5;
 
 		// edit game data based on input
 		HandleInput(input, &Game, &pass);
