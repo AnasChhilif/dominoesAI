@@ -49,12 +49,14 @@ int minimax(game_round Round) {
     return bestMove;
 }
 */
+
 decision *minimax(game_round* Round, int depth, int maximizingPlayer){
     int pass = 0;
     int right = Round->board[Round->right_end -1]->right;
     int left = Round->board[Round->left_end + 1]->left;
     player_hand *bothand = Round->player[1];
     decision *Rvalue;
+    Rvalue = (decision *) malloc(sizeof(decision));
 	if (depth == 0 || RoundEnded(Round, pass)){
         Rvalue->eval = eval(Round);
         Rvalue->DomInd = -1;
@@ -65,40 +67,39 @@ decision *minimax(game_round* Round, int depth, int maximizingPlayer){
 	    double	maxEval = -INFINITY;
         double eval;
 		for(int i = 0; i<7; i++){
-            if(i!=right){
                 domino *newDom = CreateDomino(right, i);
                 game_round *child = roundCopy(*Round);
                 child->board[Round->right_end] = newDom;
+                ++child->right_end;
                 Rvalue = minimax(child, depth-1, 0);
                 maxEval = MAX(Rvalue->eval, maxEval);
                 Rvalue->eval = maxEval;
                 Rvalue->DomInd = -1;
                 Rvalue->side = 1;
-            }
+        }
 		for(int i = 0; i<7; i++){
-            if(i!=left){
                 domino *newDom = CreateDomino(i, left);
                 game_round *child = roundCopy(*Round);
-                child->board[Round->right_end] = newDom;
+                child->board[Round->left_end] = newDom;
+                child->left_end--;
                 Rvalue = minimax(child, depth-1, 0);
                 maxEval = MAX(Rvalue->eval, maxEval);
                 Rvalue->eval = maxEval;
                 Rvalue->DomInd = -1;
                 Rvalue->side = 1;
-            }
-		return Rvalue;
         }
+		return Rvalue;
 	}
-    }
 	else {
 		double minEval = INFINITY;
         double eval;
 		for (int i = 0; i<bothand->size; i++){
 			// make child
             if(bothand->hand[i]->right == right){
-                domino *newDom = CreateDomino(right, bothand->hand[i]->left);
+                domino *newDom = CreateDomino(bothand->hand[i]->left, right);
                 game_round *child = roundCopy(*Round);
                 child->board[Round->right_end] = newDom;
+                child->right_end++;
                 Rvalue= minimax(child, depth-1, 1);
                 minEval = MIN(Rvalue->eval, minEval);
                 Rvalue->eval = minEval;
@@ -106,9 +107,10 @@ decision *minimax(game_round* Round, int depth, int maximizingPlayer){
                 Rvalue->side = 1;
             }
             if(bothand->hand[i]->left == right){
-                domino *newDom = CreateDomino(right, bothand->hand[i]->left);
+                domino *newDom = CreateDomino(bothand->hand[i]->right, right);
                 game_round *child = roundCopy(*Round);
                 child->board[Round->right_end] = newDom;
+                child->right_end++;
                 Rvalue= minimax(child, depth-1, 1);
                 minEval = MIN(Rvalue->eval, minEval);
                 Rvalue->eval = minEval;
@@ -116,9 +118,10 @@ decision *minimax(game_round* Round, int depth, int maximizingPlayer){
                 Rvalue->side = 1;
             }
             if(bothand->hand[i]->right == left){
-                domino *newDom = CreateDomino(bothand->hand[i]->left, left);
+                domino *newDom = CreateDomino(left, bothand->hand[i]->left);
                 game_round *child = roundCopy(*Round);
-                child->board[Round->right_end] = newDom;
+                child->board[Round->left_end] = newDom;
+                child->left_end--;
                 Rvalue= minimax(child, depth-1, 1);
                 minEval = MIN(Rvalue->eval, minEval);
                 Rvalue->eval = minEval;
@@ -126,9 +129,10 @@ decision *minimax(game_round* Round, int depth, int maximizingPlayer){
                 Rvalue->side = 0;
             }
             if(bothand->hand[i]->left == left){
-                domino *newDom = CreateDomino(bothand->hand[i]->right, left);
+                domino *newDom = CreateDomino(left, bothand->hand[i]->right);
                 game_round *child = roundCopy(*Round);
-                child->board[Round->right_end] = newDom;
+                child->board[Round->left_end] = newDom;
+                child->left_end--;
                 Rvalue= minimax(child, depth-1, 1);
                 minEval = MIN(Rvalue->eval, minEval);
                 Rvalue->eval = minEval;

@@ -98,7 +98,6 @@ int main(int argc, char* argv[]) {
 	}
 
 	if ( RoundEnded(Game.currentRound, pass) ){
-		// TODO: following in a separate function InitRound
 		UpdateScore(&Game,Winner(&Game));
 		Game.currentRound = NewRound();
 		Game.roundNum += 1;
