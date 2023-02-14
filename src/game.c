@@ -77,6 +77,7 @@ int main(int argc, char* argv[]) {
 	else {
 		// Ai move
 		// BotMove(&Game);
+        int oldturn = Game.currentRound->turn;
         decision *Dec = minimax(Game.currentRound, 3, 0);
         printf("%d %d\n", Dec->DomInd, Dec->side);
         if(Dec->DomInd == -1){
@@ -90,6 +91,10 @@ int main(int argc, char* argv[]) {
 
 		// edit game data based on input
 		HandleInput(input, &Game, &pass);
+        if(oldturn == Game.currentRound->turn){
+            pass ++;
+            Game.currentRound->turn = 1 - Game.currentRound->turn;
+        }
 	}
 
 	if ( RoundEnded(Game.currentRound, pass) ){
