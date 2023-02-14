@@ -22,6 +22,7 @@ domino* CreateDomino(int right, int left){
 
 
 void shuffle(domino* array[], size_t n){
+    srand(time(NULL));
     if (n > 1) {
         size_t i;
         for (i = 0; i < n - 1; i++)
@@ -255,7 +256,7 @@ game_round *roundCopy(game_round Round){
     for (int i = 0; i < BOARD_SIZE; i++){
         round->board[i] = NULL;
         if(Round.board[i]!=NULL){
-//            *(round->board[i]) = (domino) malloc(sizeof(domino));
+            round->board[i] = (domino *) malloc(sizeof(domino));
             round->board[i]->right = Round.board[i]->right;
             round->board[i]->left = Round.board[i]->left;
         }

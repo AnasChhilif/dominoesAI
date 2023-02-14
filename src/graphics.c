@@ -259,7 +259,7 @@ int DrawHands(SDL_Renderer *renderer, game Game){
     }
     for(int i = 0; i < hand2->size; i++){
         //DrawEmptyDomino(renderer, 600 + i*(DOMINO_WIDTH+10), 5, 1);
-        DrawDomino(renderer, 600  + i*(DOMINO_WIDTH+10), 5, *(hand2->hand[i]), 0, 1);
+        DrawEmptyDomino(renderer, 600  + i*(DOMINO_WIDTH+10), 5, 1);
     }
 }
 

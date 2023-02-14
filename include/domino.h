@@ -42,8 +42,8 @@ int RoundEnded(game_round* Round, int pass);
 void TurnDomino(domino* domino);
 void UpdateScore(game* Game, int winner);
 int HandleInput(int input, game* Game, int *pass);
-game_round *roundCopy(game_round Round);
-void handsCopy(player_hand* hand1, player_hand *hand2, game_round Round);
+game_round *roundCopy(game_round cRound);
+void handsCopy(player_hand* hand1, player_hand *hand2, game_round cRound);
 void freeRound(game_round *round);
 
 #endif

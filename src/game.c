@@ -78,8 +78,8 @@ int main(int argc, char* argv[]) {
 		// Ai move
 		// BotMove(&Game);
         int oldturn = Game.currentRound->turn;
-        decision *Dec = minimax(Game.currentRound, 3, 0);
-        printf("%d %d\n", Dec->DomInd, Dec->side);
+        decision *Dec = minimax(Game.currentRound, 5, 0);
+        printf("chosen index %d side %d\n", Dec->DomInd, Dec->side);
         if(Dec->DomInd == -1){
             input = 6;
             HandleInput(input, &Game, &pass);

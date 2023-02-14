@@ -56,8 +56,10 @@ decision *minimax(game_round* Round, int depth, int maximizingPlayer){
     int left = Round->board[Round->left_end + 1]->left;
     player_hand *bothand = Round->player[1];
     decision *Rvalue;
-    Rvalue = (decision *) malloc(sizeof(decision));
+    printf("depth : %d round : %x\n right %d left %d\n", depth, Round, right, left);
+    printf("roundended%d\n", RoundEnded(Round, pass));
 	if (depth == 0 || RoundEnded(Round, pass)){
+        Rvalue = (decision *) malloc(sizeof(decision));
         Rvalue->eval = eval(Round);
         Rvalue->DomInd = -1;
         Rvalue->side = -1;
@@ -76,6 +78,7 @@ decision *minimax(game_round* Round, int depth, int maximizingPlayer){
                 Rvalue->eval = maxEval;
                 Rvalue->DomInd = -1;
                 Rvalue->side = 1;
+        freeRound(child);
         }
 		for(int i = 0; i<7; i++){
                 domino *newDom = CreateDomino(i, left);
@@ -87,6 +90,7 @@ decision *minimax(game_round* Round, int depth, int maximizingPlayer){
                 Rvalue->eval = maxEval;
                 Rvalue->DomInd = -1;
                 Rvalue->side = 1;
+        freeRound(child);
         }
 		return Rvalue;
 	}
@@ -95,6 +99,8 @@ decision *minimax(game_round* Round, int depth, int maximizingPlayer){
         double eval;
 		for (int i = 0; i<bothand->size; i++){
 			// make child
+            printf("bhsize %d\n", bothand->size);
+            printf("bothand left %d b r %d\n",bothand->hand[i]->right, bothand->hand[i]->left );
             if(bothand->hand[i]->right == right){
                 domino *newDom = CreateDomino(bothand->hand[i]->left, right);
                 game_round *child = roundCopy(*Round);
@@ -105,6 +111,7 @@ decision *minimax(game_round* Round, int depth, int maximizingPlayer){
                 Rvalue->eval = minEval;
                 Rvalue->DomInd = i;
                 Rvalue->side = 1;
+        freeRound(child);
             }
             if(bothand->hand[i]->left == right){
                 domino *newDom = CreateDomino(bothand->hand[i]->right, right);
@@ -116,6 +123,7 @@ decision *minimax(game_round* Round, int depth, int maximizingPlayer){
                 Rvalue->eval = minEval;
                 Rvalue->DomInd = i;
                 Rvalue->side = 1;
+        freeRound(child);
             }
             if(bothand->hand[i]->right == left){
                 domino *newDom = CreateDomino(left, bothand->hand[i]->left);
@@ -127,6 +135,7 @@ decision *minimax(game_round* Round, int depth, int maximizingPlayer){
                 Rvalue->eval = minEval;
                 Rvalue->DomInd = i;
                 Rvalue->side = 0;
+        freeRound(child);
             }
             if(bothand->hand[i]->left == left){
                 domino *newDom = CreateDomino(left, bothand->hand[i]->right);
@@ -138,9 +147,11 @@ decision *minimax(game_round* Round, int depth, int maximizingPlayer){
                 Rvalue->eval = minEval;
                 Rvalue->DomInd = i;
                 Rvalue->side = 0;
+        freeRound(child);
             }
-		return Rvalue;
+                printf("printa hrbana\n");
         }
+		return Rvalue;
     }
 }
 
