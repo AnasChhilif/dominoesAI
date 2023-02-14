@@ -2,7 +2,9 @@
 #include<stdlib.h>
 #include<math.h>
 #include<sys/param.h>
+#include <limits.h>
 #include "../include/domino.h"
+#include "../include/minmax.h"
 
 int eval(game_round* Round){
     int count = 0;
@@ -13,27 +15,62 @@ int eval(game_round* Round){
     }
 	return count;
 }
+
 /*
-int minimax(game_round* Round, int depth, int maximizingPlayer){
-    domino* domino_set[28];
-    for(int i = 0; i<7; i++){
-        for(int j = 0; j<=i; j++){
-            domino_set[c] = CreateDomino(i, j);
-            c++;
+int minimax(game_round Round) {
+    int bestMove = -1;
+    int bestScore = INT_MIN;
+    int currentScore;
+
+    for (int i = 0; i < Round.player[1]->size; i++) {
+        game_round* tempRound = roundCopy(Round);
+        PlaceDomino(tempRound, i, 0);
+        if (RoundEnded(tempRound)) {
+            currentScore = Winner(tempRound);
+            freeRound(tempRound);
+            if (currentScore == 1) {
+                return i;
+            } else if (currentScore == 0) {
+                bestMove = i;
+                bestScore = 0;
+                break;
+            }
+        } else {
+            int opponentMove = minimax(*tempRound);
+            currentScore = -Winner(tempRound);
+            if (currentScore > bestScore) {
+                bestScore = currentScore;
+                bestMove = i;
+            }
+            freeRound(tempRound);
         }
     }
-	if (depth == 0 or RoundEnded(game_round* Round)){
-		return eval(Round);
+
+    return bestMove;
+}
+*/
+decision *minimax(game_round* Round, int depth, int maximizingPlayer){
+    int pass = 0;
+    int right = Round->board[Round->right_end]->right;
+    int left = Round->board[Round->left_end]->left;
+    decision *Rvalue;
+	if (depth == 0 || RoundEnded(Round, pass)){
+        Rvalue->eval = eval(Round);
+        Rvalue->DomInd = -1;
+        Rvalue->side = -1;
+        return Rvalue;
 	}
 	if (maximizingPlayer) {
 	    double	maxEval = -INFINITY;
         double eval;
-		for(int i = 0; i<28; i++){
-            if(1)
-			// make child
-			eval = minimax(child, depth-1, 0);
-			maxEval = max(eval, maxEval);
-
+		for(int i = 0; i<7; i++){
+            if(i!=right){
+                domino *newDom = CreateDomino(right, i);
+                game_round *child = roundCopy(*Round);
+                child->board[Round->right_end] = newDom;
+                eval = minimax(child, depth-1, 0);
+                maxEval = MAX(eval, maxEval);
+            }
 		return maxEval;
 	}
 	else {
@@ -47,8 +84,8 @@ int minimax(game_round* Round, int depth, int maximizingPlayer){
         }
     }
 }
-*/
 
+/*
 int dumbAI(game *Game){
     int max[2] = {0, 0};
     player_hand *hand = Game->currentRound->player[1];
@@ -73,4 +110,5 @@ int dumbAI(game *Game){
     }
     return max[1];
 }
+*/
 

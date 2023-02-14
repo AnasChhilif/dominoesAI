@@ -202,9 +202,9 @@ int ValidMove(game* Game){
 	return 0;
 }
 
-int RoundEnded(game* Game, int pass){
-	player_hand* hand1 = Game->currentRound->player[0];
-	player_hand* hand2 = Game->currentRound->player[1];
+int RoundEnded(game_round* Round, int pass){
+	player_hand* hand1 = Round->player[0];
+	player_hand* hand2 = Round->player[1];
 	return hand1->size == 0 || hand2->size == 0 || pass == 2;
 }
 
@@ -226,39 +226,38 @@ int Winner(game* Game){
     else return 1;
 }
 
-void handsCopy(player_hand* hand1, player_hand *hand2, game Game){
-    hand1->size = Game.currentRound->player[0]->size;
-    hand2->size = Game.currentRound->player[1]->size;
-    game_round* round = Game.currentRound;
-    for(int i = 0; i < round->player[0]->size; i++){
+void handsCopy(player_hand* hand1, player_hand *hand2, game_round Round){
+    hand1->size = Round.player[0]->size;
+    hand2->size = Round.player[1]->size;
+    for(int i = 0; i < Round.player[0]->size; i++){
         hand1->hand[i] = malloc(sizeof(domino));
-        hand1->hand[i]->left = round->player[0]->hand[i]->left;
-        hand1->hand[i]->right = round->player[0]->hand[i]->right;
+        hand1->hand[i]->left = Round.player[0]->hand[i]->left;
+        hand1->hand[i]->right = Round.player[0]->hand[i]->right;
     }
-    for(int i = 0; i < round->player[1]->size; i++){
+    for(int i = 0; i < Round.player[1]->size; i++){
         hand2->hand[i] = malloc(sizeof(domino));
-        hand2->hand[i]->right = round->player[1]->hand[i]->right;
-        hand2->hand[i]->left = round->player[1]->hand[i]->left;
+        hand2->hand[i]->right = Round.player[1]->hand[i]->right;
+        hand2->hand[i]->left = Round.player[1]->hand[i]->left;
     }
 }
 
-game_round *roundCopy(game Game){
+game_round *roundCopy(game_round Round){
     player_hand* hand1 = (player_hand*) malloc(sizeof(player_hand));
     player_hand* hand2 = (player_hand*) malloc(sizeof(player_hand));
-    handsCopy(hand1, hand2, Game);
+    handsCopy(hand1, hand2, Round);
 
     game_round* round = (game_round*) malloc(sizeof(game_round));
     round->player[0] = hand1;
     round->player[1] = hand2;
-    round->left_end = Game.currentRound->left_end;
-    round->right_end = Game.currentRound->right_end;
-    round->turn = Game.currentRound->turn;
+    round->left_end = Round.left_end;
+    round->right_end = Round.right_end;
+    round->turn = Round.turn;
     for (int i = 0; i < BOARD_SIZE; i++){
         round->board[i] = NULL;
-        if(Game.currentRound->board[i]!=NULL){
+        if(Round.board[i]!=NULL){
 //            *(round->board[i]) = (domino) malloc(sizeof(domino));
-            round->board[i]->right = Game.currentRound->board[i]->right;
-            round->board[i]->left = Game.currentRound->board[i]->left;
+            round->board[i]->right = Round.board[i]->right;
+            round->board[i]->left = Round.board[i]->left;
         }
     }
     return round;

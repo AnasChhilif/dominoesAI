@@ -4,6 +4,7 @@
 #include <SDL2/SDL_ttf.h>
 #include "../include/domino.h"
 #include "../include/graphics.h"
+#include "../include/minmax.h"
 
 
 
@@ -59,11 +60,6 @@ int main(int argc, char* argv[]) {
     Game.selected = 0;	 	// currently selected domino
     Game.side = 0;		// currently selected side  0: right, 1: left
     Game.currentRound = NewRound();
-    game_round * nero;
-    nero = roundCopy(Game);
-    printf("left %d, right %d, turn %d\n", nero->left_end, nero->right_end, nero->turn);
-    freeRound(nero);
-    printf("left %d, right %d, turn %d\n", nero->left_end, nero->right_end, nero->turn);
     int input = 0;
 
     // Game loop
@@ -81,7 +77,6 @@ int main(int argc, char* argv[]) {
 	else {
 		// Ai move
 		// BotMove(&Game);
-
 		input = 0;
 		input = get_input();
 
@@ -89,7 +84,7 @@ int main(int argc, char* argv[]) {
 		HandleInput(input, &Game, &pass);
 	}
 
-	if ( RoundEnded(&Game, pass) ){
+	if ( RoundEnded(Game.currentRound, pass) ){
 		// TODO: following in a separate function InitRound
 		UpdateScore(&Game,Winner(&Game));
 		Game.currentRound = NewRound();
