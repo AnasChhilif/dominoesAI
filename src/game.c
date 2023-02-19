@@ -79,7 +79,6 @@ int main(int argc, char* argv[]) {
 		// BotMove(&Game);
         int oldturn = Game.currentRound->turn;
         decision *Dec = minimax(Game.currentRound, 5, 0);
-        printf("chosen index %d side %d\n", Dec->DomInd, Dec->side);
         if(Dec->DomInd == -1){
             input = 6;
             HandleInput(input, &Game, &pass);
